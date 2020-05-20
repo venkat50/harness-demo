@@ -5,7 +5,7 @@ variable "minio_region" {
 }
 
 variable "minio_server" {
- default = "172.28.128.12:9000"
+ default = "http://172.28.128.12:30837"
 }
 
 variable "minio_access_key" {
@@ -14,4 +14,8 @@ variable "minio_access_key" {
 
 variable "minio_secret_key" {
  default = "minio123"
+}
+
+variable "my_bucket" {
+ default = "my-bucket-0520"
 }
