@@ -19,3 +19,4 @@ variable "minio_secret_key" {
 variable "my_bucket" {
  default = "my-bucket-0520"
 }
+

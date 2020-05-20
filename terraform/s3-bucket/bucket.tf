@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "example" {
    bucket = var.my_bucket
-   acl = "public"
+   acl = "public-read-write"
    tags = {
     Terraform   = "true"
     Environment = "dev"
