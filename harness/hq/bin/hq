@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# Assign HARNESS_ACCOUNT_ID and HARNESS_API_KEY
+if [ -z $HQ_HOME ]; then
+  source $HOME/setenv.sh
+fi
+
+# Loading defaults - TBD
+hq_ids=$(echo $HQ_HOME/hq/config/*.id)
+echo $h_ids
+for h_id in $h_ids; do
+  source $HQ_HOME/hq/config/$h_id
+done
+
+HARNESS_URL='https://app.harness.io/gateway/api/graphql?accountId='$HARNESS_ACCOUNT_ID 
+
+# Core function to invoke the Harness API
+fn_run_query () {
+   curl -s \
+        -H 'x-api-key: '$HARNESS_API_KEY \
+        -X POST \
+        -H 'Content-Type: application/json' \
+        --data @- \
+        $HARNESS_URL
+}
+
+fn_create_query () {
+cat <<_EOF_ | sed "/QUERY/r $1" | sed -e "/QUERY/d" 
+{"query":"
+QUERY
+${QUOTES}
+}
+_EOF_
+}
+
+fn_sub_query (){
+sed -e "s/VAR1/$1/" \
+    -e "s/VAR2/$2/" \
+    -e "s/VAR3/$3/"
+}
+
+if [ $# -eq 0 ]; then
+  echo "Usage: hql <module/query.hql> VAR1 VAR2 VAR3..."
+  exit 0
+fi
+
+QUERY_FILE=$1
+
+if [ ! -f $QUERY_FILE ]; then
+   QUERY_FILE=${HQ_HOME}/hq/lib/$1
+fi
+
+shift;
+
+
+QUOTES='"'
+grep -q "mutation" $QUERY_FILE
+if [ $? -eq 0 ]; then
+  QUOTES=''
+fi
+
+# DEBUG
+#fn_create_query $QUERY_FILE | fn_sub_query "$@" 
+
+fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query
+
+
