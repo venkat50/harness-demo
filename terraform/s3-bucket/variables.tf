@@ -20,3 +20,6 @@ variable "my_bucket" {
  default = "my-bucket-0520"
 }
 
+variable "my_file" {
+ default = "sample.txt"
+}
