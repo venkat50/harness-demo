@@ -61,6 +61,10 @@
                                      <image>172.28.128.12:30451/docker/spring-boot/gs-spring-boot</image>
                                   </to>
 				       <allowInsecureRegistries>true</allowInsecureRegistries>
+				  <auth>
+                                     <username>admin</username>
+                                     <password>admin123</password>
+                                  </auth>
                                </configuration>
                         </plugin>
 		</plugins>
