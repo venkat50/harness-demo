@@ -65,7 +65,7 @@
                                      </auth>
                                   </to>
 				       <allowInsecureRegistries>true</allowInsecureRegistries>
-				       <sendCredentialsOverHttp>true</sendCredentialsOverHttp>
+				    
 				  
                                </configuration>
                         </plugin>
