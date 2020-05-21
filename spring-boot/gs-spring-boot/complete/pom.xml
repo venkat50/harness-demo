@@ -52,6 +52,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+                               <groupId>com.google.cloud.tools</groupId>
+                               <artifactId>jib-maven-plugin</artifactId>
+                               <version>2.0.0</version>
+                               <configuration>
+                                  <to>
+                                     <image>172.28.128.12:30451/docker/spring-boot/gs-spring-boot</image>
+                                  </to>
+                               </configuration>
+                        </plugin>
 		</plugins>
 	</build>
 
