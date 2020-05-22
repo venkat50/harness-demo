@@ -12,9 +12,10 @@ $ hq
 Usage: hq <module/query.hql> VAR1 VAR2 VAR3...
 
 # Example 1 - Get Application Id
+```
 $ hq id/App.hql MyApp
 WHlkfu9VS1uXDj-kyucJuQ
-
+```
 # Example 2 - List Apps
 $ hq list/Apps.hql 2 | jq  .
 {
@@ -33,9 +34,9 @@ $ hq list/Apps.hql 2 | jq  .
     }
   }
 }
-
+```
 # Example 3 - Using scripts
-
+```
 $ hq/scripts/getCP.sh | jq .
 {
   "data": {
@@ -53,3 +54,4 @@ $ hq/scripts/getCP.sh | jq .
     }
   }
 }
+```
