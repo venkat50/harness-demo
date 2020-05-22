@@ -11,7 +11,7 @@ curl -s \
 
 cat <<_EOF_ | fn_run_query
 {"query":"{
-  cloudProviders(limit: 5){
+  cloudProviders(limit: 2){
     nodes{
       name
       id

@@ -47,8 +47,8 @@ fi
 QUERY_FILE=$1
 
 # Check whether to return only ID
-
-RETURN_ALL=$(echo $QUERY_FILE | grep -q "id")
+echo $QUERY_FILE | grep -q "id"
+RETURN_ID=$?
 
 if [ ! -f $QUERY_FILE ]; then
    QUERY_FILE=${HQ_HOME}/lib/$1
@@ -63,16 +63,18 @@ if [ $? -eq 0 ]; then
   QUOTES=''
 fi
 
+
 # DEBUG
 #fn_create_query $QUERY_FILE | fn_sub_query "$@" 
 
-if [ $RETURN_ALL ]; then
-  fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query
+
+if [ $RETURN_ID -eq 0 ]; then
+  RESPONSE=$(fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query)
+  echo ${RESPONSE} | sed -e "s/^.*id...//" -e "s/....\$//"
   exit 0
 fi
 
-# RETURN ONLY ID
+# RETURN ALL
+fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query
 
-RESPONSE=$(fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query)
 
-echo ${RESPONSE} | sed -e "s/^.*id...//" -e "s/....\$//"
