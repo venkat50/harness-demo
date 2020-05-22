@@ -6,10 +6,9 @@ if [ -z $HQ_HOME ]; then
 fi
 
 # Loading defaults - TBD
-hq_ids=$(echo $HQ_HOME/hq/config/*.id)
-echo $h_ids
+hq_ids=$(echo $HQ_HOME/config/*.id)
 for h_id in $h_ids; do
-  source $HQ_HOME/hq/config/$h_id
+  source $HQ_HOME/config/$h_id
 done
 
 HARNESS_URL='https://app.harness.io/gateway/api/graphql?accountId='$HARNESS_ACCOUNT_ID 
@@ -40,14 +39,19 @@ sed -e "s/VAR1/$1/" \
 }
 
 if [ $# -eq 0 ]; then
-  echo "Usage: hql <module/query.hql> VAR1 VAR2 VAR3..."
+  echo "Usage: hq <module/query.hql> VAR1 VAR2 VAR3..."
   exit 0
 fi
 
+
 QUERY_FILE=$1
 
+# Check whether to return only ID
+
+RETURN_ALL=$(echo $QUERY_FILE | grep -q "id")
+
 if [ ! -f $QUERY_FILE ]; then
-   QUERY_FILE=${HQ_HOME}/hq/lib/$1
+   QUERY_FILE=${HQ_HOME}/lib/$1
 fi
 
 shift;
@@ -62,6 +66,13 @@ fi
 # DEBUG
 #fn_create_query $QUERY_FILE | fn_sub_query "$@" 
 
-fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query
+if [ $RETURN_ALL ]; then
+  fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query
+  exit 0
+fi
 
+# RETURN ONLY ID
 
+RESPONSE=$(fn_create_query $QUERY_FILE | fn_sub_query "$@" | fn_run_query)
+
+echo ${RESPONSE} | sed -e "s/^.*id...//" -e "s/....\$//"
