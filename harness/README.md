@@ -17,6 +17,7 @@ $ hq id/App.hql MyApp
 WHlkfu9VS1uXDj-kyucJuQ
 ```
 # Example 2 - List Apps
+```
 $ hq list/Apps.hql 2 | jq  .
 {
   "data": {
