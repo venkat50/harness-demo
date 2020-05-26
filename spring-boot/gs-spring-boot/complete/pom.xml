@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-                <build.number>VERSION</build.number>
+                <build.number>latest</build.number>
                 <docker.registry>172.28.128.12:30451</docker.registry>
 	</properties>
 
