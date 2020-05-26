@@ -58,7 +58,10 @@
                                <version>2.0.0</version>
                                <configuration>
                                   <to>
+                                     <!--
                                      <image>172.28.128.12:30451/docker/spring-boot/gs-spring-boot</image>
+->
+                                     <image>${localRegistry}/docker/spring-boot/gs-spring-boot:${imageTag}</image>
 			             <auth>
                                         <username>admin</username>
                                         <password>admin123</password>
