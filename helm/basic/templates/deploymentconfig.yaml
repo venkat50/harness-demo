@@ -1,0 +1,27 @@
+apiVersion: v1
+items:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      template: deployment-app
+      release: {{ .Release.Name }}
+    name: app
+  spec:
+    replicas: 1
+    selector:
+      name: app
+    template:
+      metadata:
+        labels:
+          name: app
+        name: app
+      spec:
+        containers:
+        - image: openshift/deployment-example:{{ .Values.version }}
+          name: deployment-app
+          ports:
+          - containerPort: 8080
+kind: List
+metadata:
+  name: deployment-app
