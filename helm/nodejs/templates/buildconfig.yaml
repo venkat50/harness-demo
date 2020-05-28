@@ -17,7 +17,7 @@ spec:
       from:
         kind: ImageStreamTag
         namespace: {{ .Values.namespace | quote }}
-        name: nodejs:6
+        name: nodejs
       env:
       - name: NPM_MIRROR
         value: {{ .Values.npm_mirror | quote }}
