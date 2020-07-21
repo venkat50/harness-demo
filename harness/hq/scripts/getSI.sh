@@ -1,6 +1,5 @@
 #!/bin/bash
 
-response=""
 
 fn_run_query () {
 curl -s \
@@ -25,6 +24,13 @@ RESPONSE=$(cat <<_EOF_ | fn_run_query
 _EOF_
 )
 
+echo $RESPONSE | grep -q "err"
+
+if [ $? -eq 0 ]; then
+  echo $APP_NAME not found
+  exit 1
+fi
+
 APP_ID=$(echo ${RESPONSE} | sed -e "s/^.*id...//" -e "s/....\$//")
 
 RESPONSE=$(cat <<_EOF_ | fn_run_query
@@ -40,7 +46,7 @@ _EOF_
 )
 
 TOTAL=$(echo ${RESPONSE} | tr -dc '0-9')
-echo "TOTAL SI=$TOTAL"
+echo "TOTAL SI = $TOTAL"
 
 RESPONSE=$(cat <<_EOF_ | fn_run_query
 {"query":"{
@@ -55,4 +61,4 @@ _EOF_
 )
 
 SI=$(echo ${RESPONSE} | tr -dc '0-9')
-echo "$APP_NAME COUNT=$SI"
+echo "$APP_NAME COUNT = $SI"
