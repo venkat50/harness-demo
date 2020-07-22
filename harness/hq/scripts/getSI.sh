@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# Sample script to retrieve the Service Instance (SI) count
+# Customize this to implement your chargeback model per application
+#
 
 
 fn_run_query () {
@@ -10,6 +14,10 @@ curl -s \
 'https://app.harness.io/gateway/api/graphql?accountId='$HARNESS_ACCOUNT_ID
 }
 
+if [ $# -eq 0 ]; then
+  echo "Usage getSI.sh <APP_NAME>"
+  exit 1
+fi
 
 APP_NAME=$1
 
