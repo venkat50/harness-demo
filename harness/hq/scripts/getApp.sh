@@ -9,7 +9,7 @@ curl -s \
 'https://app.harness.io/gateway/api/graphql?accountId='$HARNESS_ACCOUNT_ID 
 }
 
-APP_NAME="K8S"
+APP_NAME=$1
 
 cat <<_EOF_ | fn_run_query
 {"query":"

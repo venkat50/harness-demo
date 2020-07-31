@@ -17,6 +17,7 @@ PL_ID=$(hq id/Pipeline.hql $plName $APP_ID)
 echo $APP_ID
 echo $PL_ID
 
+
 cat <<_EOF_ | fn_run_query
 {"query":"
   mutation(\$startExecution: StartExecutionInput\u0021){

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Assign HARNESS_ACCOUNT_ID and HARNESS_API_KEY
 if [ -z $HQ_HOME ]; then
