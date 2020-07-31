@@ -1,0 +1,11 @@
+apiVersion: v1
+entries:
+  mychart:
+  - apiVersion: v2
+    description: A Helm chart for Kubernetes
+    name: mychart
+    type: application
+    urls:
+    - hello-nodejs.zip
+    version: 0.1.0
+generated: "2020-07-25T17:20:00.298640841Z"

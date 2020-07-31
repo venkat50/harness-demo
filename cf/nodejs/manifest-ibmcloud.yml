@@ -1,0 +1,8 @@
+---
+applications:
+ - name: hello-nodejs
+   random-route: true
+   memory: 64M
+   disk_quota: 256M
+   buildpacks:
+   - sdk-for-nodejs_v4_3-20200606-1928
