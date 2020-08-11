@@ -2,7 +2,7 @@
 #
 # Sample script to create a new app with blueprint app
 
-GIT_CONNECTORID='Change Me'
+#GIT_CONNECTORID='Change Me'
 
 fn_run_query () {
  curl -s \
