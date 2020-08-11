@@ -1,2 +1,5 @@
 myvalue: "Hello World"
 version: v2
+regionId: N
+firstNameChar: 'A'
+lastNameChar: 'Y'
