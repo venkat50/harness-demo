@@ -35,6 +35,7 @@ fi
 
 APP_ID=$(echo ${RESPONSE} | sed -e "s/^.*id...//" -e "s/....\$//")
 
+#echo $APP_ID
 
 RESPONSE=$(cat <<_EOF_ | fn_run_query 
 {"query":"
@@ -50,6 +51,7 @@ _EOF_
 
 PL_ID=$(echo ${RESPONSE} | sed -e "s/^.*id...//" -e "s/....\$//")
 
+#echo $PL_ID
 
 cat <<_EOF_ | fn_run_query
 {"query":"
@@ -71,21 +73,24 @@ cat <<_EOF_ | fn_run_query
     "entityId": "$PL_ID",
     "variableInputs": [
       {
-        "name": "myinfra1",
+        "name": "Environment",
         "variableValue": {
           "type": "NAME",
-          "value": "tmp-infra"
-        }
-      },
-      {
-        "name": "myinfra2",
-        "variableValue": {
-          "type": "NAME",
-          "value": "tmp-infra"
+          "value": "DEV"
         }
       }
-    ]
-   }
+    ],
+    "serviceInputs": [{
+      "name": "echo service",
+      "artifactValueInput": {
+        "valueType": "BUILD_NUMBER",
+        "buildNumber": {
+           "buildNumber": "1.32",
+           "artifactSourceName": "Docker Hub"
+       }
+      }
+    }]
   }
+ }
 }
 _EOF_
