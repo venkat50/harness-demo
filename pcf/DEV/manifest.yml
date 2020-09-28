@@ -1,11 +1,10 @@
 ---
 applications:
 - name: first-push
-  instances: 1
+  instances: ((INSTANCE_COUNT))
   memory: 32M
   disk_quota: 256M
-  path: ./sample-app.zip
   routes:
-  - route: first-push-harness.mybluemix.net
+  - route: ((MY_ROUTE))
   buildpacks:
   - binary_buildpack
