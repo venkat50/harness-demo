@@ -9,11 +9,16 @@ curl -s \
 'https://app.harness.io/gateway/api/graphql?accountId='$HARNESS_ACCOUNT_ID 
 }
 
-appName="Basic"
-wfName="k8s-rolling"
+APPNAME="K8S"
+WFNAME="helm-deploy"
+SVCNAME=mychart
 
-APP_ID=$(hq id/App.hql $appName)
-WF_ID=$(hq id/Workflow.hql $wfName $APP_ID)
+#appName="Basic"
+#wfName="k8s-rolling"
+SVCNAME="gs-spring-boot"
+
+APP_ID=$(hq id/App.hql $APPNAME)
+WF_ID=$(hq id/Workflow.hql $WFNAME $APP_ID)
 
 cat <<_EOF_ | fn_run_query
 {"query":"
@@ -34,7 +39,7 @@ cat <<_EOF_ | fn_run_query
     "applicationId": "$APP_ID",
     "entityId": "$WF_ID",
     "serviceInputs": {
-      	"name": "gs-spring-boot",
+      	"name": "$SVCNAME",
       "artifactValueInput": {
         "valueType": "BUILD_NUMBER",
         "buildNumber": {
@@ -54,14 +59,21 @@ cat <<_EOF_ | fn_run_query
         "name": "InfraDefinition_KUBERNETES",
         "variableValue": {
           "type": "NAME",
-          "value": "k3s-cluster-tools"
+          "value": "k3s-cluster2"
+        }
+      },
+      {
+        "name": "chartName",
+        "variableValue": {
+          "type": "NAME",
+          "value": "$1"
         }
       },
       {
         "name": "Service",
         "variableValue": {
           "type": "NAME",
-          "value": "gs-spring-boot"
+          "value": "$SVCNAME"
         }
       }
     ]
