@@ -1,2 +1,2 @@
-INSTANCE_COUNT=2
-MY_ROUTE=test-push-harness.mybluemix.net
+INSTANCE_COUNT: 2
+MY_ROUTE: test-push-harness.mybluemix.net
