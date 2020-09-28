@@ -1,6 +1,6 @@
 ---
 applications:
-- name: first-push
+- name: second-push
   instances: ((INSTANCE_COUNT))
   memory: 32M
   disk_quota: 256M
