@@ -1,0 +1,191 @@
+---
+
+resources:
+
+- name: ci
+  type: git
+  icon: concourse-ci
+  source:
+    uri: https://github.com/cloudfoundry-tutorials/sample-app.git
+    branch: master
+    username: ((github_username))
+    password: ((github_password))
+    paths: [ci/*]
+
+- name: source
+  type: git
+  icon: source-repository
+  source:
+    uri: https://github.com/cloudfoundry-tutorials/sample-app.git
+    branch: master
+    username: ((github_username))
+    password: ((github_password))
+    ignore_paths: [ci/*,README.md,LICENSE,NOTICE,release-notes/*]
+
+- name: version
+  type: semver
+  icon: alpha-v-circle-outline
+  source:
+    driver: s3
+    initial_version: 0.0.1
+    bucket: tutorials.cff.rscale.io
+    key: sample-app/version
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: us-west-2
+
+- name: rc-app
+  type: s3
+  icon: water
+  source:
+    regexp: sample-app/rc/sample-app-(.*).zip
+    bucket: tutorials.cff.rscale.io
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: us-west-2
+
+- name: rc-manifest
+  type: s3
+  icon: note-text-outline
+  source:
+    regexp: sample-app/rc/manifest-(.*).yml
+    bucket: tutorials.cff.rscale.io
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: us-west-2
+
+- name: release-notes
+  type: git
+  icon: text
+  source:
+    uri: https://github.com/cloudfoundry-tutorials/sample-app.git
+    branch: master
+    username: ((github_username))
+    password: ((github_password))
+    paths: [release-notes/*]
+
+- name: gh-release
+  type: github-release
+  icon: tag
+  source:
+    owner: cloudfoundry-tutorials
+    repository: sample-app
+    access_token: ((github_access_token))
+
+jobs:
+ 
+# - name: unit-test
+#   plan:
+#   - in_parallel:
+#     - get: source
+#       trigger: true
+#       params: {depth: 1}
+#     - get: ci
+#       trigger: true
+#       params: {depth: 1}
+#   - task: unit-test
+#     file: ci/ci/tasks/unit-test.yml
+
+- name: package
+  serial_groups: [version]
+  plan:
+  - in_parallel:
+    - get: source
+      # passed: [unit-test]
+      trigger: true
+      params: {depth: 1}
+    - get: ci
+      params: {depth: 1}
+    - get: version
+      params: {pre: rc}
+  - task: package
+    file: ci/ci/tasks/package.yml
+  - put: rc-app
+    params: {file: rc/sample-app-*.zip}
+  - put: rc-manifest
+    params: {file: rc/manifest-*.yml}
+  - put: version
+    params: {file: version/version}  
+
+- name: integration-test
+  plan: 
+  - in_parallel:
+    - get: rc-app
+      passed: [package]
+      trigger: true
+    - get: rc-manifest
+      passed: [package]
+      trigger: true
+    - get: ci
+      params: {depth: 1}
+  - task: test-app-basics
+    file: ci/ci/tasks/integration-test.yml
+    params:
+      CF_API: ((sample-app/cf_api))
+      CF_USERNAME: ((sample-app/cf_username))
+      CF_PASSWORD: ((sample-app/cf_password))
+      CF_ORG: ((sample-app/cf_org))
+      CF_SPACE: ((sample-app/cf_space))
+      CF_ROUTE: ((sample-app/cf_route))
+      CF_SERVICE: ((sample-app/cf_service))
+      CF_PLAN: ((sample-app/cf_plan))
+    on_success:
+      task: cleanup
+      file: ci/ci/tasks/cleanup.yml
+      params:
+        CF_API: ((sample-app/cf_api))
+        CF_USERNAME: ((sample-app/cf_username))
+        CF_PASSWORD: ((sample-app/cf_password))
+        CF_ORG: ((sample-app/cf_org))
+        CF_SPACE: ((sample-app/cf_space))  
+    on_failure:
+      task: cleanup
+      file: ci/ci/tasks/cleanup.yml
+      params:
+        CF_API: ((sample-app/cf_api))
+        CF_USERNAME: ((sample-app/cf_username))
+        CF_PASSWORD: ((sample-app/cf_password))
+        CF_ORG: ((sample-app/cf_org))
+        CF_SPACE: ((sample-app/cf_space))
+
+- name: release
+  serial_groups: [version]
+  plan:
+  - in_parallel:
+    - get: release-notes
+      trigger: true
+      params: {depth: 1}
+    - get: rc-app
+      passed: [integration-test]
+    - get: rc-manifest
+      passed: [integration-test]
+    - get: ci
+      params: {depth: 1}
+    - get: version
+      params: {bump: final}
+  - task: prepare-release-info
+    file: ci/ci/tasks/prepare-release-info.yml
+  - task: promote
+    file: ci/ci/tasks/promote.yml
+  - put: gh-release
+    params:
+      name: release-info/name
+      commitish: release-info/commit
+      body: release-info/body
+      tag: version/version
+      globs:
+      - artifact/*
+  - put: version
+    params: {bump: patch, pre: rc}
+
+- name: minor
+  serial_groups: [version]
+  plan:
+  - put: version
+    params: {bump: minor, pre: rc}
+
+- name: major
+  serial_groups: [version]
+  plan:
+  - put: version
+    params: {bump: major, pre: rc}

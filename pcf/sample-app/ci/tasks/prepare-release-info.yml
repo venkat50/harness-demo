@@ -1,0 +1,19 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: rscale/ubuntu-base
+    tag: 'latest'
+
+inputs:
+- name: release-notes
+- name: version
+- name: ci
+
+outputs:
+- name: release-info
+
+run:
+  path: ci/ci/tasks/prepare-release-info.sh
