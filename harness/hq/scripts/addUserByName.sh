@@ -3,7 +3,7 @@
 : ${1?"Usage: $0 <USER_INPUT>.info "}
 
 :<<FILE_INPUT
-Sample input
+# Sample input - venkat.info
 
 name: "Venkat Padmanabhan"
 email: "venkat@harness.io"
