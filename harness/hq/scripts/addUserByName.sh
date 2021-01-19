@@ -3,11 +3,18 @@
 : ${1?"Usage: $0 <USER_INPUT>.info "}
 
 :<<FILE_INPUT
-Sample input
+
+Sample input #1
 
 name: "Venkat Padmanabhan"
 email: "venkat@harness.io"
 userGroupNames: test1_grp test2_grp
+
+Sample input #2
+
+name: "Venkat Padmanabhan"
+email: "venkat@harness.io"
+userGroupIds: [ "XYZ_1234", "ABC_2345"] 
 
 FILE_INPUT
 
