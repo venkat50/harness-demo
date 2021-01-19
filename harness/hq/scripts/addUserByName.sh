@@ -14,7 +14,7 @@ Sample input #2
 
 name: "Venkat Padmanabhan"
 email: "venkat@harness.io"
-userGroupIds: [ "XYZ_1234", "ABC_2345"] 
+userGroupIds: ["XYZ_1234", "ABC_2345"] 
 
 FILE_INPUT
 
