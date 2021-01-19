@@ -3,11 +3,11 @@
 : ${1?"Usage: $0 <USER_INPUT>.info "}
 
 :<<FILE_INPUT
-# Sample input - venkat.info
+Sample input
 
 name: "Venkat Padmanabhan"
 email: "venkat@harness.io"
-userGroupIds: test1_grp test2_grp
+userGroupNames: test1_grp test2_grp
 
 FILE_INPUT
 
@@ -25,18 +25,18 @@ fn_print_id () {
  echo ${str1%\"*}
 }
 
-groupList=( $(sed -n s/^userGroupIds:.//p $1) )
+groupIdList=( $(sed -n s/^userGroupIds:.//p $1) )
+groupNameList=$(sed -n s/^userGroupNames:.//p $1)
 userName=$(sed -n s/^name:.//p $1)
 userEmail=$(sed -n s/^email:.//p $1)
 
 
-userGroupIds="["
 
+userGroupIds="["
 
 SEP=""
 
-for grpName in ${groupList[@]}; do
-
+for grpName in ${groupNameList}; do
 
 RESPONSE=$(cat <<_EOF_ | fn_run_query
 {"query":"
@@ -49,14 +49,19 @@ RESPONSE=$(cat <<_EOF_ | fn_run_query
 _EOF_
 )
 
-userGroupIds="${userGroupIds} ${SEP} \"$(fn_print_id)\" "
+userGroupIds="${userGroupIds}${SEP}\"$(fn_print_id)\""
 SEP=','
 
 done
 
-userGroupIds="${userGroupIds} ]"
+if [[ -z "${groupIdList}" ]]; then
+   userGroupIds="${userGroupIds}]"
+else
+   userGroupIds="${groupIdList}"
+fi
 
-cat <<_EOF_ | fn_run_query
+#cat <<_EOF_ | fn_run_query
+cat <<_EOF_ 
 {"query":"
   mutation(\$user: CreateUserInput\u0021){
     createUser(input: \$user){
