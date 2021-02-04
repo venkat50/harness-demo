@@ -20,7 +20,7 @@ EPOCH_TIME="$(date "+%s" -d ${BEFORE_DATE})000"
 cat <<_EOF_ | fn_run_query
 {"query":"
 {
- instances(limit: 10, filters: [{createdAt: {operator: AFTER, value: \"${EPOCH_TIME}\"}}]) {
+ instances(limit: 10, filters: [{createdAt: {operator: BEFORE, value: \"${EPOCH_TIME}\"}}]) {
     pageInfo {
       total
       hasMore
