@@ -1,5 +1,7 @@
 #!/bin/sh
 
+: ${1?"Usage: $0 <DATE dd/m/yy>"}
+
 fn_run_query () {
 curl -s \
 -H 'x-api-key: '$HARNESS_API_KEY \
