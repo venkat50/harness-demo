@@ -1,0 +1,5 @@
+PCF_APP_NAME: ${service.name}
+PCF_APP_MEMORY: 32M
+INSTANCES: 2
+MY_ROUTE_1: demo-v1.us-south.cf.appdomain.cloud
+MY_ROUTE_2: demo-v3.us-south.cf.appdomain.cloud
