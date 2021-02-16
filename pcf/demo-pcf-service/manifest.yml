@@ -1,0 +1,29 @@
+# Enter your manifest.yml.
+#
+# There are two methods for specifying route maps: hardcoding in manifest.yml or using variables in the vars.yml file
+# Hardcode route maps in the manifest:
+# routes:
+#   - route: app.harness.io
+#   - route: temp.harness.io
+# Use variables in the vars.yml file:
+# routes:
+#   - route: ((MY_ROUTE_1))
+#   - route: ((MY_ROUTE_2))
+#
+# Please refer to {https://docs.harness.io} for details about using manifest.yml.
+
+# Define the default name, memory limit, and number of instances.
+# You can override variable values such as ((PCF_APP_NAME)), ((APP_MEMORY)), and ((INSTANCES)) in the vars.yml file.
+# Use random-route to generate a unique route and avoid name collisions.
+applications:
+- name: ((PCF_APP_NAME))
+  memory: ((PCF_APP_MEMORY))
+  instances : ((INSTANCES))
+  random-route: false
+  routes:
+    - route: ((MY_ROUTE_1))
+    - route: ((MY_ROUTE_2))
+  health-check-type: http
+  health-check-http-endpoint: /
+  buildpacks:
+   - binary_buildpack
