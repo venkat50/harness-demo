@@ -67,8 +67,7 @@ else
    userGroupIds="${groupIdList}"
 fi
 
-#cat <<_EOF_ | fn_run_query
-cat <<_EOF_ 
+cat <<_EOF_ | fn_run_query
 {"query":"
   mutation(\$user: CreateUserInput\u0021){
     createUser(input: \$user){
