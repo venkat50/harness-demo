@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    au: "0223092"
+  name: {{.Values.name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.name}}
+  replicas: {{.Values.replicas}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.name}}
+    spec:
+      imagePullSecrets:
+      - name: hrns-cred
+      containers:
+      - name: nginx
+        #image: wfcertifiedvirtual.wfcr.wellsfargo.net/nginx:4.3-9-snapshot
+        image: {{ .Values.image }}
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivikegeEscalation: false
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: {{.Values.name}}         
+        volumeMounts:
+        - name: {{.Values.volume.name}} 
+          mountPath: {{.Values.volume.mountPath}}
+      volumes:
+      - name: {{.Values.volume.name}}
+        secret:
+          secretName: {{.Values.name}}
+          defaultMode: 0755   
