@@ -1,0 +1,38 @@
+name: bgapp
+replicas: 1
+
+#image: wfcertifiedvirtual.wfcr.wellsfargo.net/docket-virtual/nginx:1.14.2
+image: <+artifact.image>
+# dockercfg: <+artifact.imagePullSecret>
+
+createNamespace: false
+namespace: <+infra.namespace>
+#namespace: dctrn-standard-dev-5635e71b7
+
+# Service Type allow you to specify what kind of service you want.
+# Possible values for ServiceType are:
+# ClusterIP | NodePort | LoadBalancer | ExternalName
+serviceType: LoadBalancer
+
+# A Service can map an incoming port to any targetPort.
+# targetPort is where application is listening on inside the container.
+servicePort: 80
+serviceTargetPort: 80
+
+# Specify all environment variables to be added to the container.
+# The following two maps, config and secrets, are put into a ConfigMap
+# and a Secret, respectively.
+# Both are added to the container environment in podSpec as envFrom source.
+env:
+  config:
+    key1: green
+    name: green
+  secrets:
+#    key2: Um9sbGluZwo=
+    val: green
+    name: green
+    
+# Volume to be used to store secrets
+volume:
+  name: green
+  mountPath: /etc/green
