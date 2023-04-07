@@ -1,26 +1,31 @@
-# Terraform configuration
+resource "aws_s3_bucket" "example" {
+  bucket = var.my_bucket
 
-terraform {
-   backend "s3" {
-     endpoint = "http://172.28.128.12:30837"
-     bucket  = "tfstate"
-     key = "terraform.tfstate"
-     region = "us-east-1"
-     force_path_style  = true
-     skip_credentials_validation = true
-     skip_metadata_api_check = true
-  }
 }
 
-provider "aws" {
-  region = var.minio_region
-  access_key = var.minio_access_key
-  secret_key = var.minio_secret_key
-  skip_credentials_validation = true
-  skip_requesting_account_id = true
-  s3_force_path_style     = true
-  endpoints {
-   s3 = var.minio_server
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.example.id
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+}
+
+data "aws_iam_policy_document" "allow_access_from_another_account" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+
+    resources = [
+      aws_s3_bucket.example.arn,
+      "${aws_s3_bucket.example.arn}/*",
+    ]
   }
 }
 
