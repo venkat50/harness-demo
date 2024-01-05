@@ -1,0 +1,122 @@
+pipeline:
+  name: test-ssp
+  identifier: testssp
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: deploy
+        identifier: deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Ssh
+          service:
+            serviceRef: liquibase
+          environment:
+            environmentRef: Dev
+            deployToAll: false
+            provisioner:
+              steps:
+                - step:
+                    type: ShellScriptProvision
+                    name: my-hosts
+                    identifier: myhosts
+                    spec:
+                      source:
+                        type: Harness
+                        spec:
+                          file: /Dev/webserver.sh
+                      environmentVariables: []
+                    timeout: 10m
+            infrastructureDefinitions:
+              - identifier: dynamicinfra
+                inputs:
+                  identifier: dynamicinfra
+                  type: Pdc
+                  spec:
+                    provisioner: <+input>
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: Display Host Properties
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          componentType=<+instance.host.properties.component>
+                          echo "${componentType}"
+                          echo <+infra.hosts>
+                          echo <+infra.hostsAttributes[1].port>
+                          echo 'instance.hostName' <+instance.hostName>
+                          echo 'instance.host.properties.port' <+instance.host.properties.port>
+                          echo 'instance.host.properties.envType' <+instance.host.properties.envType>
+                          echo 'instance.host.properties.servername' <+instance.host.properties.servername>
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+                  strategy:
+                    repeat:
+                      items: <+stage.output.hosts>
+              - step:
+                  type: ShellScript
+                  name: Install common
+                  identifier: Install_common
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          echo "Installing common <+repeat.item>"
+                          echo "ansible-playbook playbook -i /tmp/hosts  -l <+infra.name> repo-name/main.yaml"
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+                  strategy:
+                    repeat:
+                      items: <+stage.output.hosts>
+                      maxConcurrency: 1
+              - step:
+                  type: ShellScript
+                  name: Install DB
+                  identifier: Install_DB
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          echo "Installing DB on <+instance.hostName>"
+
+                          echo "ansible-playbook playbook -i /tmp/hosts  -l <+infra.name> repo-name/main.yaml"
+                    environmentVariables: []
+                    outputVariables: []
+                  when:
+                    stageStatus: Success
+                    condition: <+instance.host.properties.component> == "db"
+                  timeout: 10m
+                  strategy:
+                    repeat:
+                      items: <+stage.output.hosts>
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+        strategy:
+          repeat:
+            items:
+              - blk
+              - lv
