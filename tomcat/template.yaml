@@ -1,0 +1,163 @@
+template:
+  name: Default Install Jar Bash
+  identifier: Default_Install_Jar_Bash
+  description: Default Templated Step provided by Harness for Install Jar Artifact using Bash script
+  versionLabel: v1
+  type: Step
+  tags:
+    script: bash
+    command: install
+    artifactType: jar
+    author: Harness
+  spec:
+    type: Command
+    timeout: 10m
+    spec:
+      onDelegate: false
+      environmentVariables:
+        - name: DestinationDirectory
+          type: String
+          value: <+input>
+        - name: WorkingDirectory
+          type: String
+          value: <+input>
+      outputVariables: []
+      commandUnits:
+        - identifier: Setup_Runtime_Paths
+          name: Setup Runtime Paths
+          type: Script
+          spec:
+            shell: Bash
+            source:
+              type: Inline
+              spec:
+                script: |-
+                  # Execute as root and pass environment variables
+                  # su -p -
+
+                  # Execute as root via user credentials (with root privileges)
+                  # sudo -E su -p -
+
+                  # Creating runtime, backup and staging folders:
+
+                  mkdir -p "$DestinationDirectory/runtime"
+                  mkdir -p "$DestinationDirectory/backup"
+                  mkdir -p "$DestinationDirectory/staging"
+                  mkdir -p "$WorkingDirectory"
+        - identifier: Stop_Service
+          name: Stop Service
+          type: Script
+          spec:
+            shell: Bash
+            source:
+              type: Inline
+              spec:
+                script: "# [ -f ./shutdown.sh ] && ./shutdown.sh  || true"
+        - identifier: Process_Stopped
+          name: Process Stopped
+          type: Script
+          spec:
+            shell: Bash
+            source:
+              type: Inline
+              spec:
+                script: |-
+                  # i=0
+                  # while [ "$i" -lt 30 ]
+                  # do
+                  #   pgrep -f "\-Dcatalina.home=$HOME/<+service.name>/<+env.name>/tomcat"
+                  #   rc=$?
+                  #   if [ "$rc" -eq 0 ]
+                  #   then
+                  #     sleep 1
+                  #     i=$((i+1))
+                  #   else
+                  #     exit 0
+                  #   fi
+                  # done
+                  # exit 1
+        - identifier: Port_Cleared
+          name: Port Cleared
+          type: Script
+          spec:
+            shell: Bash
+            source:
+              type: Inline
+              spec:
+                script: |-
+                  # server_xml="$HARNESS_RUNTIME_PATH/tomcat/conf/server.xml"
+                  # if [ -f "$server_xml" ]
+                  # then
+                  #   port=$(grep "<Connector[ ]*port=\"[0-9]*\"[ ]*protocol=\"HTTP/1.1\"" "$server_xml" |cut -d '"' -f2)
+                  # nc -v -z -w 5 localhost $port
+                  # else
+                  #   echo "Tomcat config file("$server_xml") does not exist.. port check failed."
+                  # exit 1
+                  # fi
+        - identifier: Copy_Artifact
+          name: Copy Artifact
+          type: Copy
+          spec:
+            sourceType: Artifact
+            destinationPath: $DestinationDirectory
+        - identifier: Copy_Config
+          name: Copy Config
+          type: Copy
+          spec:
+            sourceType: Config
+            destinationPath: $DestinationDirectory
+        - identifier: Start_Service
+          name: Start Service
+          type: Script
+          spec:
+            shell: Bash
+            source:
+              type: Inline
+              spec:
+                script: "# ./startup.sh"
+        - identifier: Process_Running
+          name: Process Running
+          type: Script
+          spec:
+            shell: Bash
+            source:
+              type: Inline
+              spec:
+                script: |-
+                  # i=0
+                  # while [ "$i" -lt 30 ]
+                  # do
+                  #     pgrep -f "\-Dcatalina.home=$HOME/<+service.name>/<+env.name>/tomcat"
+                  #     rc=$?
+                  #     if [ "$rc" -eq 0 ]
+                  #     then
+                  #         exit 0
+                  #         sleep 1
+                  #         i=$((i+1))
+                  #     else
+                  #         sleep 1
+                  #         i=$((i+1))
+                  #     fi
+                  # done
+                  # exit 1
+        - identifier: Port_Listening
+          name: Port Listening
+          type: Script
+          spec:
+            shell: Bash
+            source:
+              type: Inline
+              spec:
+                script: |-
+                  # if [ -f "$server_xml" ]
+                  # then
+                  #   port=$(grep "<Connector[ ]*port=\"[0-9]*\"[ ]*protocol=\"HTTP/1.1\"" "$server_xml" |cut -d '"' -f2)
+                  #   nc -v -z -w 5 localhost $port
+                  #   rc=$?
+                  #   if [ "$rc" -eq 0 ]
+                  #   then
+                  #     exit 1
+                  #   fi
+                  # else
+                  #   echo "Tomcat config file("$server_xml") does not exist.. skipping port check."
+                  # fi
