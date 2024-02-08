@@ -1,0 +1,193 @@
+pipeline:
+  name: tomcat-deploy
+  identifier: tomcatdeploy
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: deploy
+        identifier: deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Ssh
+          service:
+            serviceRef: tomcatsample
+            serviceInputs:
+              serviceDefinition:
+                type: Ssh
+                spec:
+                  artifacts:
+                    primary:
+                      primaryArtifactRef: <+input>
+                      sources: <+input>
+          environment:
+            environmentRef: Dev
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: tomcat
+          execution:
+            steps:
+              - step:
+                  type: Command
+                  timeout: 10m
+                  spec:
+                    onDelegate: false
+                    environmentVariables:
+                      - name: DestinationDirectory
+                        type: String
+                        value: <+env.variables.CATALINA_HOME>/webapps
+                    outputVariables: []
+                    commandUnits:
+                      - identifier: Stop_Service
+                        name: Stop Service
+                        type: Script
+                        spec:
+                          workingDirectory: <+env.variables.CATALINA_HOME>/bin
+                          shell: Bash
+                          source:
+                            type: Inline
+                            spec:
+                              script: "[ -f ./shutdown.sh ] && ./shutdown.sh  || true"
+                      - identifier: Process_Stopped
+                        name: Process Stopped
+                        type: Script
+                        spec:
+                          shell: Bash
+                          source:
+                            type: Inline
+                            spec:
+                              script: |-
+                                # i=0
+                                # while [ "$i" -lt 30 ]
+                                # do
+                                #   pgrep -f "\-Dcatalina.home=$HOME/<+service.name>/<+env.name>/tomcat"
+                                #   rc=$?
+                                #   if [ "$rc" -eq 0 ]
+                                #   then
+                                #     sleep 1
+                                #     i=$((i+1))
+                                #   else
+                                #     exit 0
+                                #   fi
+                                # done
+                                # exit 1
+                      - identifier: Port_Cleared
+                        name: Port Cleared
+                        type: Script
+                        spec:
+                          shell: Bash
+                          source:
+                            type: Inline
+                            spec:
+                              script: |-
+                                # server_xml="$HARNESS_RUNTIME_PATH/tomcat/conf/server.xml"
+                                # if [ -f "$server_xml" ]
+                                # then
+                                #   port=$(grep "<Connector[ ]*port=\"[0-9]*\"[ ]*protocol=\"HTTP/1.1\"" "$server_xml" |cut -d '"' -f2)
+                                # nc -v -z -w 5 localhost $port
+                                # else
+                                #   echo "Tomcat config file("$server_xml") does not exist.. port check failed."
+                                # exit 1
+                                # fi
+                      - identifier: Copy_Artifact
+                        name: Copy Artifact
+                        type: Copy
+                        spec:
+                          sourceType: Artifact
+                          destinationPath: $DestinationDirectory
+                      - identifier: Start_Service
+                        name: Start Service
+                        type: Script
+                        spec:
+                          workingDirectory: <+env.variables.CATALINA_HOME>/bin
+                          shell: Bash
+                          source:
+                            type: Inline
+                            spec:
+                              script: |-
+                                ./startup.sh
+                                echo "Testing"
+                      - identifier: Process_Running
+                        name: Process Running
+                        type: Script
+                        spec:
+                          shell: Bash
+                          source:
+                            type: Inline
+                            spec:
+                              script: |-
+                                # i=0
+                                # while [ "$i" -lt 30 ]
+                                # do
+                                #     pgrep -f "\-Dcatalina.home=$HOME/<+service.name>/<+env.name>/tomcat"
+                                #     rc=$?
+                                #     if [ "$rc" -eq 0 ]
+                                #     then
+                                #         exit 0
+                                #         sleep 1
+                                #         i=$((i+1))
+                                #     else
+                                #         sleep 1
+                                #         i=$((i+1))
+                                #     fi
+                                # done
+                                # exit 1
+                      - identifier: Port_Listening
+                        name: Port Listening
+                        type: Script
+                        spec:
+                          shell: Bash
+                          source:
+                            type: Inline
+                            spec:
+                              script: |-
+                                # if [ -f "$server_xml" ]
+                                # then
+                                #   port=$(grep "<Connector[ ]*port=\"[0-9]*\"[ ]*protocol=\"HTTP/1.1\"" "$server_xml" |cut -d '"' -f2)
+                                #   nc -v -z -w 5 localhost $port
+                                #   rc=$?
+                                #   if [ "$rc" -eq 0 ]
+                                #   then
+                                #     exit 1
+                                #   fi
+                                # else
+                                #   echo "Tomcat config file("$server_xml") does not exist.. skipping port check."
+                                # fi
+                  name: deploy app
+                  identifier: deploy_app
+                  when:
+                    stageStatus: Success
+                  strategy:
+                    repeat:
+                      items: <+stage.output.hosts>
+            rollbackSteps:
+              - step:
+                  name: Rollback
+                  identifier: Rollback
+                  timeout: 10m
+                  strategy:
+                    repeat:
+                      items: <+stage.output.hosts>
+                  template:
+                    templateRef: account.Default_Install_Jar_Bash
+                    templateInputs:
+                      type: Command
+                      spec:
+                        environmentVariables:
+                          - name: DestinationDirectory
+                            type: String
+                            value: $HOME/<+service.name>/<+env.name>
+                          - name: WorkingDirectory
+                            type: String
+                            value: $HOME/<+service.name>/<+env.name>/tomcat/bin
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+        when:
+          pipelineStatus: Success
