@@ -5,7 +5,7 @@
 greeting: Hello World
 favorite:
   drink: coffee
-  food: coffee
+  food: pizza
   
 replicaCount: 1
 
