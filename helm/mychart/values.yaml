@@ -6,4 +6,3 @@ greeting: "Hello World"
 favorite:
   drink: "coffee"
   food: "pizza"
-token: "dev-token"
