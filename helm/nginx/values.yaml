@@ -6,7 +6,7 @@ nameOverride: ""
 podSecurityContext: {}
 replicas: "1"
 imagePullSecrets: []
-greeting: "Testing"
+greeting: "Hello World"
 resources: {}
 serviceAccount:
   name: ""
