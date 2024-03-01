@@ -1,18 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-deployment
+  labels:
+    app: myapp
+  name: myapp
+
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: myapp
+  strategy: {}
   template:
     metadata:
       labels:
         app: myapp
     spec:
       containers:
-     - image: alpine:latest
+      - image: alpine:latest
         name: myapp
         args:
         - /bin/sh
