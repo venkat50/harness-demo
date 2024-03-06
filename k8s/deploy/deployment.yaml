@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+
+  labels:
+    app: kubernetes-bootcamp
+
+    "app-id": "myapp-id"
+  name: kubernetes-bootcamp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-bootcamp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: kubernetes-bootcamp
+
+        "app-id": "myapp-id"
+    spec:
+      containers:
+      - image: gcr.io/google-samples/kubernetes-bootcamp:v1
+        name: kubernetes-bootcamp
+
