@@ -17,7 +17,7 @@ spec:
         app: myapp
     spec:
       containers:
-      - image: alpine:latest
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         name: myapp
         args:
         - /bin/sh
