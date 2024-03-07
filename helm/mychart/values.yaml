@@ -9,4 +9,4 @@ favorite:
 token: "dev-token"
 image:
   tag: <+artifacts.primary.tag>
-  repository: "alpine"
+  repository: "library/alpine"
