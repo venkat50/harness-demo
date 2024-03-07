@@ -8,5 +8,5 @@ favorite:
   food: "pizza"
 token: "dev-token"
 image:
-  tag: <+artifacts.primary.tag>
-  repository: registry.hub.docker.com/library/alpine
+  tag: "<+artifacts.primary.tag>"
+  repository: "registry.hub.docker.com/library/alpine"
