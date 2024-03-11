@@ -1,0 +1,78 @@
+service:
+  name: nginx-bitnami
+  identifier: nginxbitnami
+  orgIdentifier: DEMO
+  projectIdentifier: ACME
+  serviceDefinition:
+    spec:
+      manifests:
+        - manifest:
+            identifier: oci_registry
+            type: HelmChart
+            spec:
+              store:
+                type: OciHelmChart
+                spec:
+                  config:
+                    type: Generic
+                    spec:
+                      connectorRef: ocibitnami
+                  basePath: /bitnamicharts
+              chartName: nginx
+              subChartPath: ""
+              chartVersion: ""
+              helmVersion: V380
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+              fetchHelmChartMetadata: false
+        - manifest:
+            identifier: helm_repo
+            type: HelmChart
+            spec:
+              store:
+                type: Http
+                spec:
+                  connectorRef: bitnamihttp
+              chartName: nginx
+              chartVersion: ""
+              subChartPath: ""
+              helmVersion: V3
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+              fetchHelmChartMetadata: false
+        - manifest:
+            identifier: override
+            type: Values
+            spec:
+              store:
+                type: Harness
+                spec:
+                  files:
+                    - /values.yaml
+      manifestConfigurations:
+        primaryManifestRef: <+input>
+      artifacts:
+        primary:
+          primaryArtifactRef: <+input>
+          sources:
+            - spec:
+                connectorRef: Docker
+                imagePath: library/nginx
+                tag: <+input>
+                digest: ""
+              identifier: root_user
+              type: DockerRegistry
+            - spec:
+                connectorRef: bitnamiregistry
+                imagePath: bitnami/nginx
+                tag: <+input>
+                digest: ""
+              identifier: non_root_user
+              type: DockerRegistry
+      variables:
+        - name: namespace
+          type: String
+          description: ""
+          required: false
+          value: <+<+service.name>.toLowerCase()>
+    type: Kubernetes
