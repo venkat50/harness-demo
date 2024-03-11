@@ -1,0 +1,7 @@
+global:
+  image:
+    tag: <+artifacts.primary.tag>
+    registry: docker.io
+    repository: <+artifacts.primary.imagePath>
+livenessProbe:
+  failureThreshold: 3
