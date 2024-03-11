@@ -1,0 +1,37 @@
+service:
+  name: myservice
+  identifier: myservice
+  orgIdentifier: DEMO
+  projectIdentifier: ACME
+  serviceDefinition:
+    spec:
+      manifests:
+        - manifest:
+            identifier: svc1
+            type: HelmChart
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: account.venkat50
+                  gitFetchType: Branch
+                  folderPath: /helm/mychart
+                  repoName: harness-demo
+                  branch: master
+              subChartPath: ""
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+              helmVersion: V3
+              fetchHelmChartMetadata: false
+      artifacts:
+        primary:
+          primaryArtifactRef: <+input>
+          sources:
+            - spec:
+                connectorRef: Docker
+                imagePath: library/alpine
+                tag: <+input>
+                digest: ""
+              identifier: alpine
+              type: DockerRegistry
+    type: Kubernetes
