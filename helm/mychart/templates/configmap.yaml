@@ -4,9 +4,6 @@ metadata:
   name: myapp-configmap
   labels:
     app: myapp
-  annotations:
-    last-updated-at: "2024-04-03 20:02:52.166965067 +0000 UTC m=+0.041830105"
-    deployed-at: "2024-04-03 20:02:52.166969679 +0000 UTC m=+0.041834708"
 data:
   myvalue: {{ .Values.greeting | quote }}
   drink: {{ .Values.favorite.drink | quote  }}
