@@ -4,6 +4,45 @@ metadata:
   labels:
     app: myapp
   name: myapp
+  annotations:
+  last-updated-at: "2024-04-03 20:02:52.166879879 +0000 UTC m=+0.041744917"
+    deployed-at: "2024-04-03 20:02:52.166884773 +0000 UTC m=+0.041749802"
+    ad.datadoghq.com/sample-service.logs: >-
+      [{
+        "source": "sample-service",
+        "service": "sample-service",
+        "auto_multi_line_detection": true,
+        "log_processing_rules": [{
+            "type": "multi_line",
+            "name": "log_start_with_year",
+            "pattern": "^\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])"
+          }
+          ,{
+            "type": "multi_line",
+            "name": "log_start_with_month",
+            "pattern": "^[A-Za-z_]+ \\d+, \\d+ \\d+:\\d+:\\d+ (AM|PM)"
+          }
+          ,{
+            "type": "multi_line",
+            "name": "log_start_with_day_month",
+            "pattern": "^[A-Za-z_]+ [A-Za-z_]+ \\d+ \\d+:\\d+:\\d+ [A-Z]+ \\d{4}"
+          }
+          ,{
+            "type": "multi_line",
+            "name": "log_start_bracket_date",
+            "pattern": "^\\[\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}:\\d{2},\\d{3}\\]"
+          }
+          ,{
+            "type": "multi_line",
+            "name": "log_start_day_month_year",
+            "pattern": "^\\d{2}-[A-Za-z]+-\\d{4} \\d{2}:\\d{2}:\\d{2}.\\d{3}"
+          }
+          ,{
+            "type": "multi_line",
+            "name": "log_start_with_hours",
+            "pattern": "^\\d{1,2}:\\d{2}:\\d{2}\\.\\d{3} \\["
+          }]
+      }]
 spec:
   replicas: 1
   selector:
