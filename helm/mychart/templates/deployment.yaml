@@ -5,7 +5,7 @@ metadata:
     app: myapp
   name: myapp
   annotations:
-  last-updated-at: "2024-04-03 20:02:52.166879879 +0000 UTC m=+0.041744917"
+    last-updated-at: "2024-04-03 20:02:52.166879879 +0000 UTC m=+0.041744917"
     deployed-at: "2024-04-03 20:02:52.166884773 +0000 UTC m=+0.041749802"
     ad.datadoghq.com/sample-service.logs: >-
       [{
