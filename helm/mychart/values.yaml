@@ -1,6 +1,6 @@
 image:
-  tag: "<+artifacts.primary.tag>"
   repository: "registry.hub.docker.com/library/alpine"
+  tag: "3.17"
 replicaCount: 1
 service:
   port: 80
