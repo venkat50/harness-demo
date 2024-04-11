@@ -1,3 +1,6 @@
+image:
+  tag: "<+artifacts.primary.tag>"
+  repository: "registry.hub.docker.com/library/alpine"
 replicaCount: 1
 service:
   port: 80
@@ -7,6 +10,3 @@ favorite:
   drink: "coffee"
   food: "pizza"
 token: "dev-token"
-image:
-  tag: "<+artifacts.primary.tag>"
-  repository: "registry.hub.docker.com/library/alpine"
