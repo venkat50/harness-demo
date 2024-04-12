@@ -1,7 +1,7 @@
 image:
   repository: "registry.hub.docker.com/library/alpine"
   tag: "3.15.1"
-replicaCount: "2"
+replicaCount: "1"
 service:
   port: 80
   type: "ClusterIP"
