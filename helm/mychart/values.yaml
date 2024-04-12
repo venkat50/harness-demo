@@ -6,8 +6,6 @@ service:
   port: 80
   type: "ClusterIP"
 greeting: "Testing"
-global:
-  replicaCount: 1
 favorite:
   drink: "water"
   food: "pizza"
