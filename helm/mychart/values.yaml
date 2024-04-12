@@ -1,13 +1,13 @@
 image:
   repository: "registry.hub.docker.com/library/alpine"
-  tag: "3.17.1"
-replicaCount: "3"
+  tag: "3.12.10"
+replicaCount: "1"
 service:
   port: 80
   type: "ClusterIP"
 greeting: "Testing"
 favorite:
-  drink: "coffee"
+  drink: "water"
   food: "pizza"
 branch: "dev"
 token: "dev-token"
