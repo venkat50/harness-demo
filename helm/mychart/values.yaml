@@ -1,6 +1,6 @@
 image:
   repository: "registry.hub.docker.com/library/alpine"
-  tag: "3.12.10"
+  tag: "3.14"
 replicaCount: "1"
 service:
   port: 80
