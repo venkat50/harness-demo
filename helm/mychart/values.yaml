@@ -1,6 +1,6 @@
 image:
   repository: "registry.hub.docker.com/library/alpine"
-  tag: "3.15.1"
+  tag: "3.17.1"
 replicaCount: "1"
 service:
   port: 80
@@ -9,4 +9,5 @@ greeting: "Testing"
 favorite:
   drink: "water"
   food: "pizza"
+branch: "dev"
 token: "dev-token"
