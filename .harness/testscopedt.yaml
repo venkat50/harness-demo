@@ -1,0 +1,42 @@
+pipeline:
+  name: test-scope-dt
+  identifier: testscopedt
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: deploy-mock
+        identifier: deploymock
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: CustomDeployment
+          customDeploymentRef:
+            templateRef: mock
+            versionLabel: v1
+          service:
+            serviceRef: <+input>
+            serviceInputs: <+input>
+          execution:
+            steps:
+              - step:
+                  name: Fetch Instances
+                  identifier: fetchInstances
+                  type: FetchInstanceScript
+                  timeout: 10m
+                  spec: {}
+            rollbackSteps: []
+          environment:
+            environmentRef: <+input>
+            deployToAll: false
+            environmentInputs: <+input>
+            serviceOverrideInputs: <+input>
+            infrastructureDefinitions: <+input>
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
