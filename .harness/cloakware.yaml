@@ -1,6 +1,6 @@
 template:
-  name: cloakware
-  identifier: cloakware
+  name: cloakware1
+  identifier: cloakware1
   versionLabel: v1
   type: SecretManager
   projectIdentifier: sample
