@@ -1,0 +1,29 @@
+template:
+  name: cloakware
+  identifier: cloakware
+  versionLabel: v1
+  type: SecretManager
+  projectIdentifier: sample
+  orgIdentifier: default
+  tags: {}
+  spec:
+    shell: Bash
+    delegateSelectors: []
+    source:
+      type: Inline
+      spec:
+        script: secret=token-$alias
+    environmentVariables:
+      - name: url
+        type: String
+        value: http://app.harness.io/api/version
+      - name: app
+        type: String
+        value: alpha
+      - name: alias
+        type: String
+        value: <+input>
+    outputVariables: []
+    outputAlias:
+      scope: Pipeline
+    onDelegate: true
