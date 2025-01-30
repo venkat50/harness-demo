@@ -1,3 +1,4 @@
+app: myapp
 image:
   repository: "registry.hub.docker.com/library/alpine"
   tag: "3.15"
