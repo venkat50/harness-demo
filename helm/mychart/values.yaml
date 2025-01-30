@@ -1,4 +1,4 @@
-name: myapp
+name: myapp-Test
 image:
   repository: "registry.hub.docker.com/library/alpine"
   tag: "3.15"
