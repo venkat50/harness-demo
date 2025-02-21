@@ -1,5 +1,5 @@
 # kustomization.yaml contents
 resources:
 - ../../base
-patchesStrategicMerge:
+patches:
 - replica_count.yaml
