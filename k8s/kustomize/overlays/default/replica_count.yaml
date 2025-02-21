@@ -1,6 +1,6 @@
    apiVersion: apps/v1
    kind: Deployment
    metadata:
-     name: the-deployment
+     name: welcome-php
    spec:
-     replicas: 100
+     replicas: 3
