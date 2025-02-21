@@ -1,7 +1,6 @@
 # kustomization.yaml contents
 resources:
 - ../../base
-
 patches:
 - target:
     kind: Deployment
