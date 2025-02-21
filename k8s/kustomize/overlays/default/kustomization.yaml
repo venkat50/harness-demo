@@ -1,18 +1,5 @@
 # kustomization.yaml contents
 resources:
 - ../../base
-patches:
-- target:
-    kind: Deployment
-    name: welcome-php
-  patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: welcome-php
-    spec:
-      template:
-        spec:
-          containers:
-          - name: nginx
-            image: nginx:latest   
+patchesStrategicMerge:
+- replica_count.yaml
