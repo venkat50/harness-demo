@@ -1,5 +1,5 @@
 # kustomization.yaml contents
 resources:
-- ../../base
+  - ../../base
 patches:
   - path: replica_count.yaml
