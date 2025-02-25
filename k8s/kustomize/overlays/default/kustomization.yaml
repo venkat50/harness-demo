@@ -2,4 +2,4 @@
 resources:
 - ../../base
 patches:
-- path: replica_count.yaml
+  - path: replica_count.yaml
