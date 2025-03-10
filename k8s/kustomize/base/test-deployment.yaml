@@ -2,20 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: welcome-php
-  name: welcome-php
+    app: hello-app
+  name: hello-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: welcome-php
+      app: hello-app
   strategy: {}
   template:
     metadata:
       labels:
-        app: welcome-php
+        app: hello-app
     spec:
       containers:
-      - image: quay.io/redhatworkshops/welcome-php:latest
+      - image: us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0
         name: welcome-php
         resources: {}
