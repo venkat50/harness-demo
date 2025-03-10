@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
 - test-deployment.yaml
-- test-ns.yaml
 - test-svc.yaml
