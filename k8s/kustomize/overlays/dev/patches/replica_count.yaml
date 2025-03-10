@@ -4,4 +4,4 @@ metadata:
   name: welcome-php
   namespace: kapp
 spec:
-  replicas: 3
+  replicas: 1
