@@ -4,7 +4,6 @@ metadata:
   labels:
     app: welcome-php
   name: welcome-php
-  namespace: kapp
 spec:
   replicas: 1
   selector:
