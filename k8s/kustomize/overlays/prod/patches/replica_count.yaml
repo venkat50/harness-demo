@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: welcome-php
+  name: hello-app
 spec:
   replicas: 2
