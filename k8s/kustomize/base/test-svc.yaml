@@ -4,7 +4,6 @@ metadata:
   labels:
     app: welcome-php
   name: welcome-php
-  namespace: kapp
 spec:
   ports:
   - port: 8080
