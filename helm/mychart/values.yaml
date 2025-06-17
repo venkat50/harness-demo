@@ -1,4 +1,5 @@
 name: <+service.name>
+env: <+env.name>
 image:
   repository: "registry.hub.docker.com/library/alpine"
   tag: <+artifact.tag>
