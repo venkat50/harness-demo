@@ -1,2 +1,2 @@
-mysecret: <+secrets.getValue("test-secret")>
+mysecret: <+secrets.getValue("demo")>
 env: <+env.name>
