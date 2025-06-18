@@ -7,7 +7,7 @@ replicaCount: "1"
 service:
   port: 80
   type: "ClusterIP"
-greeting: "Testing"
+greeting: <+secrets.getValue("demo")>
 favorite:
   drink: "water"
   food: "pizza"
