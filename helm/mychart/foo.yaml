@@ -1,2 +1,0 @@
-mysecret: <+secrets.getValue("demo")>
-env: <+env.name>
