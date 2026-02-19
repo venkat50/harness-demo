@@ -23,7 +23,7 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: echo hello from harness
+                        script: echo hello gitx issue
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
