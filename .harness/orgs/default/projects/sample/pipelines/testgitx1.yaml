@@ -23,7 +23,7 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: echo hello gitx issue
+                        script: echo hello gitx issue test
                     environmentVariables: []
                     outputVariables: []
                   timeout: 10m
