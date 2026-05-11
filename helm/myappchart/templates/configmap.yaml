@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name}}-configmap
+data:
+{{ $folder := printf "%s/*" "secrets/QA" }}
+{{ ($.Files.Glob $folder).AsConfig | indent 2 }}
