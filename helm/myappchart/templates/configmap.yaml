@@ -5,3 +5,4 @@ metadata:
 data:
 {{ $folder := printf "%s/*" "secrets/QA" }}
 {{ ($.Files.Glob $folder).AsConfig | indent 2 }}
+
