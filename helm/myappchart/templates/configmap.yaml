@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name}}-configmap
 data:
-  message: {{ tpl .Values.welcomeMessage (dict "name" "Admin" "root" .) | quote }}
 {{ $folder := printf "%s/*" "secrets/QA" }}
 {{ ($.Files.Glob $folder).AsConfig | indent 2 }}
 
