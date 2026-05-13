@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name}}-tpl
 data:
-  message: {{ .Values.welcomeMessage }}
+  message: {{ tpl .Values.welcomeMessage (dict "name" "Admin" "root" .) | quote }}
