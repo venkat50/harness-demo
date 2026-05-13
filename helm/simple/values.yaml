@@ -1,4 +1,4 @@
-myappchart:
+single:
   # values.yaml
   appTitle: "MyService"
   # A template string that expects "name" and "root" keys in its context
