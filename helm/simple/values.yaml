@@ -2,6 +2,6 @@ single:
   # values.yaml
   appTitle: "MyService"
   # A template string that expects "name" and "root" keys in its context
-  # welcomeMessage: "Welcome to {{ .name }}'s dashboard for {{ .root.Values.appTitle }}."
+  welcomeMessage: "Welcome to {{ .name }}'s dashboard for {{ .root.Values.appTitle }}."
 
-  welcomeMessage: "Welcome"
+
