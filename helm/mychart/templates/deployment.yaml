@@ -26,7 +26,8 @@ spec:
         - name: config-volume
           mountPath: /etc/config # Your ConfigMap keys will appear as files in this directory
       # --- Volumes ---
+      {{ $configmapname = printf   "%s-%s" $.Values.name "configmap" }} 
       volumes:
       - name: config-volume
         configMap:
-          name: {{ .Values.name }}-configmap # References the ConfigMap name precisely
+          name: {{ $configmapname }} # References the ConfigMap name precisely
