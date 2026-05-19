@@ -7,8 +7,8 @@ metadata:
   labels:
     app: {{ $.Values.name }}
 data:
-  myvalue: {{ .Values.greeting | quote }}
-  drink: {{ .Values.favorite.drink | quote  }}
-  food: {{ .Values.favorite.food | upper | quote }}
+  myvalue: {{ $.Values.greeting | quote }}
+  drink: {{ $.Values.favorite.drink | quote  }}
+  food: {{ $.Values.favorite.food | upper | quote }}
 
 {{- end }}
