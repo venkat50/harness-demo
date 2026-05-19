@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   name: {{ $configmapname }}
   labels:
-    app: {{ .Values.name }}
+    app: {{ $.Values.name }}
 data:
   myvalue: {{ .Values.greeting | quote }}
   drink: {{ .Values.favorite.drink | quote  }}
