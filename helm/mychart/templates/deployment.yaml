@@ -21,3 +21,12 @@ spec:
         - /bin/sh
         - -c
         - tail -f /dev/null
+# --- Volume Mounts ---
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config # Your ConfigMap keys will appear as files in this directory
+      # --- Volumes ---
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ .Values.name }}-configmap # References the ConfigMap name precisely
