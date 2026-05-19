@@ -12,3 +12,7 @@ favorite:
   drink: "water"
   food: "pizza"
 token: "dev-token"
+configmaps:
+  - configmap1
+  - configmap2
+   
