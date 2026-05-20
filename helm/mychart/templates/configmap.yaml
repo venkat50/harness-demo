@@ -1,4 +1,4 @@
-{{- $configmapname := printf "%s-%s" $.Values.name . }}
+{{- $configmapname := printf "%s-%s" $.Values.name "configmap" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
