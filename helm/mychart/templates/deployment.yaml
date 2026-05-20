@@ -23,21 +23,23 @@ spec:
         - tail -f /dev/null
 # --- Volume Mounts ---
         volumeMounts:
-        {{- range .Values.configmaps }}
-        - name: config-volume-{{ . }}
-          mountPath: /etc/config/{{ . }}
-        {{- end }}
+       # {{- range .Values.configmaps }}
+       {{- $configmapname := printf "%s-%s" $.Values.name . }}
+        - name: {{ $configmapname }}
+          mountPath: /etc/config-volume
+       # {{- end }}
         - name: secret-volume
           readOnly: true
           mountPath: "/etc/secret-volume"
       # --- Volumes ---
       volumes:
-      {{- range .Values.configmaps }}
+    #  {{- range .Values.configmaps }}
       {{- $configmapname := printf "%s-%s" $.Values.name . }}
-      - name: config-volume-{{ . }}
+      {{- $secretname := printf "%s-%s" $.Values.name . }}
+      - name: {{ $configmapname }}
         configMap:
           name: {{ $configmapname }}
-      {{- end }}
+     # {{- end }}
       - name: secret-volume
         secret:
-          secretName: dotfile-secret
+          secretName: {{ $secretname }}
