@@ -1,4 +1,4 @@
-{{- range .Values.configmaps }}
+#{{- range .Values.configmaps }}
 {{- $configmapname := printf "%s-%s" $.Values.name . }}
 apiVersion: v1
 kind: ConfigMap
@@ -11,4 +11,4 @@ data:
   drink: {{ $.Values.favorite.drink | quote  }}
   food: {{ $.Values.favorite.food | upper | quote }}
 ---
-{{- end }}
+#{{- end }}
