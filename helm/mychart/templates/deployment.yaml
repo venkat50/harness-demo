@@ -23,16 +23,13 @@ spec:
         - tail -f /dev/null
 # --- Volume Mounts ---
         volumeMounts:
-       # {{- range .Values.configmaps }}
        {{- $configmapname := printf "%s-%s" $.Values.name . }}
         - name: {{ $configmapname }}
           mountPath: /etc/config-volume
-       # {{- end }}
       # --- Volumes ---
       volumes:
-    #  {{- range .Values.configmaps }}
+
       {{- $configmapname := printf "%s-%s" $.Values.name . }}
       - name: {{ $configmapname }}
         configMap:
           name: {{ $configmapname }}
-     # {{- end }}
