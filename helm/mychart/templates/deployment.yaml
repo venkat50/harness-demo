@@ -28,9 +28,6 @@ spec:
         - name: {{ $configmapname }}
           mountPath: /etc/config-volume
        # {{- end }}
-        - name: secret-volume
-          readOnly: true
-          mountPath: "/etc/secret-volume"
       # --- Volumes ---
       volumes:
     #  {{- range .Values.configmaps }}
@@ -40,6 +37,3 @@ spec:
         configMap:
           name: {{ $configmapname }}
      # {{- end }}
-      - name: secret-volume
-        secret:
-          secretName: {{ $secretname }}
