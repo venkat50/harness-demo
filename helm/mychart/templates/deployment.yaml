@@ -32,7 +32,6 @@ spec:
       volumes:
     #  {{- range .Values.configmaps }}
       {{- $configmapname := printf "%s-%s" $.Values.name . }}
-      {{- $secretname := printf "%s-%s" $.Values.name . }}
       - name: {{ $configmapname }}
         configMap:
           name: {{ $configmapname }}
