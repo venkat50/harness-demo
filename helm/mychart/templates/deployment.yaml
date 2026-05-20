@@ -28,7 +28,6 @@ spec:
           mountPath: /etc/config-volume
       # --- Volumes ---
       volumes:
-
       {{- $configmapname := printf "%s-%s" $.Values.name . }}
       - name: {{ $configmapname }}
         configMap:
