@@ -1,4 +1,4 @@
-name: <+service.name>
+name: myapp3-<+service.name>
 env: <+env.name>
 image:
   repository: "registry.hub.docker.com/library/alpine"
