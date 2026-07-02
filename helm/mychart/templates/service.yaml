@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: myservice
+  name: myservice-{{ .Release.Name }}
   annotations:
     meta.helm.sh/release-name: {{ .Release.Name }}
   labels:
