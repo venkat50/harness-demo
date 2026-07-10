@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: myapp
+    env: dev
   name: {{ .Values.name }} 
 spec:
   replicas: {{ .Values.replicaCount }}
