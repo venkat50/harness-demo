@@ -25,8 +25,8 @@ appVersion: "1.16.3"
 
 dependencies:
   - name: app1
-    repository: https://github.com/venkat50/harness-demo/helm/app1
+    repository: https://github.com/venkat50/harness-demo/helm
   - name: app2
-    repository: https://github.com/venkat50/harness-demo/helm/app2
+    repository: https://github.com/venkat50/harness-demo/helm
 
  
