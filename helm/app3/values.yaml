@@ -1,0 +1,4 @@
+image:
+  repository: "registry.hub.docker.com/library/alpine"
+  tag: "3.15"
+replicaCount: "1"
