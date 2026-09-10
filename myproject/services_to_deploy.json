@@ -1,0 +1,12 @@
+{
+  "servicesToDeploy": [
+    {
+      "name": "app1",
+      "version": "3.10.9"
+    },
+    {
+      "name": "app2",
+      "version": "3.10.5"
+    }
+  ]
+}
